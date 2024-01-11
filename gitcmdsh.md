@@ -1,4 +1,6 @@
 How to Use the Script
+*Dont worry about git pull, both scripts will make a git pull  for you before push process*
+
 NT: This also works same way as the powershell script for gitcmd.ps1
 
 
