@@ -1,4 +1,5 @@
 How to Use the Script
+NT: This also works same way as the powershell script for gitcmd.ps1
 
 
 Initialize the Script:
