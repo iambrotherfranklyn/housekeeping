@@ -59,5 +59,5 @@ git commit -m $message
 git push
 
 echo "Push complete."
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
 Clear-Host
