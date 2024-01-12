@@ -1,8 +1,13 @@
-# Path where the script will be saved and executed
+# Ensure the directory exists
+$directory = "C:\Temp"
+if (-not (Test-Path -Path $directory)) {
+    New-Item -Path $directory -ItemType Directory
+}
+
+# Define the script path
 $scriptPath = "C:\Temp\tool-installations.ps1"
 
-# (Optional) Download the script to the specified path
-# Remove this line if the script is already running from the desired location
+# Download the script to the specified path
 Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/iambrotherfranklyn/housekeeping/main/tool-installations.ps1' -OutFile $scriptPath
 
 # Create a scheduled task action to run the script
