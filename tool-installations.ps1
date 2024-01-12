@@ -1,3 +1,21 @@
+# Path where the script will be saved and executed
+$scriptPath = "C:\Temp\tool-installations.ps1"
+
+# (Optional) Download the script to the specified path
+# Remove this line if the script is already running from the desired location
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/iambrotherfranklyn/housekeeping/main/tool-installations.ps1' -OutFile $scriptPath
+
+# Create a scheduled task action to run the script
+$action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument "-File `"$scriptPath`""
+$trigger = New-ScheduledTaskTrigger -AtStartup
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "ContinueScriptAfterReboot" -Description "Run script after reboot"
+
+# Rest of your script follows...
+
+
+
+
+
 # PowerShell.exe -ExecutionPolicy Bypass -File "%~dp0installation1.bat.ps1" %*
 
 # Run PowerShell as Administrator before executing this script
