@@ -10,12 +10,41 @@ $scriptPath = "C:\Temp\tool-installations.ps1"
 # Download the script to the specified path
 Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/iambrotherfranklyn/housekeeping/main/tool-installations.ps1' -OutFile $scriptPath
 
+# Define the task name
+$taskName = "ContinueScriptAfterReboot"
+
+# Check if the scheduled task already exists
+if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
+    # Unregister/delete the existing task
+    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
+}
+
 # Create a scheduled task action to run the script
 $action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument "-File `"$scriptPath`""
 $trigger = New-ScheduledTaskTrigger -AtStartup
-Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "ContinueScriptAfterReboot" -Description "Run script after reboot"
 
-# Rest of your script follows...
+# Register the new scheduled task
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $taskName -Description "Run script after reboot"
+
+# Continue with the rest of the script...
+
+# Run PowerShell as Administrator before executing this script
+
+# Check if Chocolatey is installed
+if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
+    # Install Chocolatey package manager
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+
+    # Restart PowerShell to make sure Chocolatey is in the PATH
+    Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    exit
+}
+
+# Update Chocolatey
+choco upgrade chocolatey -y
+
+# ... rest of your script for installing software ...
 
 
 
